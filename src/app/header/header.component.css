@@ -16,5 +16,10 @@
             color: black;
             background-color: gray;
         }
+
+        &.loading {
+            background-color: yellow;
+            color: black;
+        }
     }
 }

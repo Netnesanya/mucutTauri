@@ -14,10 +14,6 @@ import { SongDataService} from "../services/song-data.service";
   styleUrl: './songs-list.component.css'
 })
 export class SongsListComponent implements OnInit{
-  //
-  // public songsList: SongDataFetched[] = [
-  //
-  // ]
 
   constructor(
       public songDataService: SongDataService

@@ -5,7 +5,7 @@
         <button (click)="submitFile()" class="submit-button"
                 [ngClass]="submitButtonStatus === DISABLED ? DISABLED
                 : (submitButtonStatus === READY ? READY : LOADING)"
-        >Submit</button>
+        >{{submitButtonStatus === LOADING ? 'Loading' : 'Submit'}}</button>
     </div>
 
     <div class="toolset-right">
