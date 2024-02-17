@@ -1,36 +1,41 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {SongComponent} from "./song/song.component";
 import {SongDataFetched, SongDataService} from "../services/song-data.service";
+import {DISABLED, LOADING, READY} from "../header/header.component";
+import {HttpService} from "../http.service";
 
 @Component({
     selector: 'app-songs-list',
     standalone: true,
     imports: [
         NgForOf,
-        SongComponent
+        SongComponent,
+        NgClass
     ],
     templateUrl: './songs-list.component.html',
     styleUrl: './songs-list.component.css'
 })
 export class SongsListComponent implements OnInit {
 
+    public updateButtonStatus: string = DISABLED
+
     constructor(
-        public songDataService: SongDataService
+        public songDataService: SongDataService,
+        public http: HttpService
     ) {
     }
 
     ngOnInit() {
-        // this.songsList.
     }
 
     public removeSong(songToRemove: SongDataFetched): void {
         this.songDataService.songsData = this.songDataService.songsData.filter(song => song !== songToRemove);
-        console.log(this.songDataService.songsData);
     }
 
     public createEmptySongField(event: Event) {
-        this.songDataService.songsData.push({ // Use push for simplicity
+        this.updateButtonStatus = READY
+        this.songDataService.songsData.push({
             title: '',
             original_url: '',
             duration: 0,
@@ -39,8 +44,23 @@ export class SongsListComponent implements OnInit {
         });
     }
 
-    // Optional: trackBy function for *ngFor
-    trackByIndex(index: number, item: any): number {
-        return index;
+    public handleUpdateButton(event: Event) {
+        if (this.updateButtonStatus === READY) {
+            event.preventDefault()
+            this.updateButtonStatus = LOADING
+
+            this.http.updateMp3Metadata(this.songDataService.songsData)
+                .subscribe(data => {
+                    this.songDataService.songsData = data as SongDataFetched[]
+                    this.updateButtonStatus = READY
+                }), ((error: Error) => {
+                this.updateButtonStatus = READY
+                console.error(error)
+            })
+        }
     }
+
+    protected readonly DISABLED = DISABLED;
+    protected readonly READY = READY;
+    protected readonly LOADING = LOADING;
 }

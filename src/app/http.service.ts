@@ -23,4 +23,8 @@ export class HttpService {
         return this.http.post(this.downloadMp3BulkUrl, metadata, {responseType: 'blob'})
     }
 
+    public updateMp3Metadata(metadata: any) {
+        return this.http.post(this.apiUrl + 'update-mp3-metadata', metadata)
+    }
+
 }

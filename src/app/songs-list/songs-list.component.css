@@ -10,3 +10,19 @@
         gap: 10px;
     }
 }
+
+.update-button {
+    &.ready {
+        background-color: #4CAF50;
+    }
+
+    &.disabled {
+        color: black;
+        background-color: gray;
+    }
+
+    &.loading {
+        background-color: yellow;
+        color: black;
+    }
+}
