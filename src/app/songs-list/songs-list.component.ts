@@ -70,6 +70,19 @@ export class SongsListComponent implements OnInit {
         }
     }
 
+    public handleCreateSiq(event: any): void {
+        event.preventDefault();
+        this.http.requestSiqCreation()
+            .subscribe({
+                next: (data) => {
+                    console.log(data);
+                },
+                error: (error) => {
+                    console.error(error);
+                }
+            });
+
+    }
     public removeAll(): void {
         this.songDataService.songsData = [];
     }

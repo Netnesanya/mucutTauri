@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {env} from "../env/env";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CombinedSongData, SongDataFetched} from "./services/song-data.service";
 
 @Injectable({
@@ -32,5 +32,10 @@ export class HttpService {
     public updateMp3Metadata(metadata: SongDataFetched) {
         return this.http.post(this.apiUrl + 'update-mp3-metadata', metadata)
     }
+
+    public requestSiqCreation() {
+        return this.http.get(this.apiUrl + 'pack-siq')
+    }
+
 
 }
