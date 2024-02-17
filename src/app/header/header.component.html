@@ -11,7 +11,7 @@
     <div class="toolset-right">
         <button (click)="handleDownloadAll()"
                 [ngClass]="downloadAllButtonStatus"
-                [disabled]="!selectedFile"
+                [disabled]="songDataService.songsData.length === 0"
                 class="download-all-button"
         >Download all</button>
     </div>

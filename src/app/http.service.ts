@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {env} from "../env/env";
 import {HttpClient} from "@angular/common/http";
-import {SongDataFetched} from "./services/song-data.service";
+import {CombinedSongData, SongDataFetched} from "./services/song-data.service";
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +20,8 @@ export class HttpService {
         return this.http.post(this.fetchVideoInfoUrl, txt);
     }
 
-    public downloadMp3Bulk(metadata: SongDataFetched[]) {
+    public downloadMp3Bulk(metadata: CombinedSongData[]) {
+        console.log(metadata);
         return this.http.post(this.downloadMp3BulkUrl, metadata, {responseType: 'blob'})
     }
 

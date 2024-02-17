@@ -6,11 +6,17 @@ export type SongDataFetched = {
   heatmap: Array<{end_time: number, start_time: number, value: number}>
   original_url: string
   title: string
-  userInput?: {
-    checked?: boolean;
-    from?: number | string;
-    to?: number | string;
-  };
+}
+
+export type SongDataUserInput =   {
+  from?: number | string;
+  to?: number | string;
+  duration?: number
+}
+
+export type CombinedSongData = {
+    fetched: SongDataFetched
+    userInput: SongDataUserInput
 }
 
 @Injectable({
@@ -18,6 +24,6 @@ export type SongDataFetched = {
 })
 export class SongDataService {
 
-  public songsData: SongDataFetched[] = [];
+  public songsData: CombinedSongData[] = [];
   constructor() { }
 }

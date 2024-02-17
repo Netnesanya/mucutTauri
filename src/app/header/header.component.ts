@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private http: HttpService,
-        private songDataService: SongDataService
+        public songDataService: SongDataService
     ) {
     }
 
@@ -43,12 +43,14 @@ export class HeaderComponent implements OnInit {
     }
 
     public handleDownloadAll(): void {
-        if (this.submitButtonStatus === READY) {
+        if (this.submitButtonStatus === READY || this.songDataService.songsData.length > 0) {
             this.downloadAllButtonStatus = LOADING
+            console.log(this.songDataService.songsData);
 
-            this.http.downloadMp3Bulk(this.songDataService.songsData.filter(song => song.userInput?.checked))
+            this.http.downloadMp3Bulk(this.songDataService.songsData)
                 .subscribe(data => {
-                    console.log(data);
+
+                    console.log(this.songDataService.songsData);
                     this.downloadAllButtonStatus = READY
                 }),
                 (error: Error) => {

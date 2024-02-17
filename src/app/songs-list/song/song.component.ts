@@ -1,15 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SongDataFetched} from "../../services/song-data.service";
+import {CombinedSongData, SongDataFetched, SongDataUserInput} from "../../services/song-data.service";
 import {NgClass, NgIf} from "@angular/common";
 import {HttpService} from "../../http.service";
 import {DISABLED, LOADING, READY} from "../../header/header.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-song',
     standalone: true,
     imports: [
         NgIf,
-        NgClass
+        NgClass,
+        FormsModule
     ],
     templateUrl: './song.component.html',
     styleUrl: './song.component.css'
@@ -17,19 +19,26 @@ import {DISABLED, LOADING, READY} from "../../header/header.component";
 export class SongComponent implements OnInit {
     @Output() removeSong = new EventEmitter<SongDataFetched>();
 
-    @Input() songData!: SongDataFetched
+    @Input() songData!: CombinedSongData
 
+
+
+    public userInput!: SongDataUserInput
     public temporaryUrl = ''
-    public updateButtonStatus = DISABLED
 
     constructor(private http: HttpService) {
     }
 
     ngOnInit() {
+        this.userInput = {
+            from: 0,
+            to: 0,
+            duration: 35,
+        }
     }
 
     public updateTitle(event: any): void {
-        this.songData['title'] = event.target.value
+        this.songData.fetched['title'] = event.target.value
     }
 
     public insertOriginalUrl(event: any): void {
@@ -39,17 +48,27 @@ export class SongComponent implements OnInit {
     public updateSong(event: any): void {
         event.preventDefault()
 
-        this.http.updateMp3Metadata({...this.songData, original_url: this.temporaryUrl})
+        this.http.updateMp3Metadata({...this.songData.fetched, original_url: this.temporaryUrl})
             .subscribe(data => {
-            this.songData = data as SongDataFetched
+            this.songData.fetched = data as SongDataFetched
         }), (error: Error) => {
             console.error('Error updating mp3 metadata:', error)
         }
     }
 
+    public updateTimestampInput(event: any): void {
+        this.songData.userInput = this.songData.userInput || {};
+
+        const inputName = event.target.name;
+        const inputValue = event.target.value;
+
+        (this.songData.userInput as any)[inputName] = Number(inputValue) || inputValue;
+    }
+
+
     public remove(event: any): void {
         event.preventDefault()
-        this.removeSong.emit(this.songData)
+        this.removeSong.emit(this.songData.fetched)
     }
 
     protected readonly READY = READY;
