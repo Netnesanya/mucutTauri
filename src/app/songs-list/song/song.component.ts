@@ -33,8 +33,10 @@ export class SongComponent implements OnInit {
         this.temporaryUrl = event.target.value
     }
 
-    public updateSong(): void {
-        this.http.updateMp3Metadata(this.songData)
+    public updateSong(event: any): void {
+        event.preventDefault()
+
+        this.http.updateMp3Metadata({...this.songData, original_url: this.temporaryUrl})
             .subscribe(data => {
             this.songData = data as SongDataFetched
         }), (error: Error) => {
