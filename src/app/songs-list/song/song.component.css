@@ -22,4 +22,11 @@
             width: 20px;
         }
     }
+
+    .update-button {
+        &:disabled {
+            color: black;
+            background-color: gray;
+        }
+    }
 }

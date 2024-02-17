@@ -12,7 +12,10 @@
         <a [href]="songData.original_url" target="_blank">Original</a>
     } @else {
         <input class="url-input" type="text" (change)="insertOriginalUrl($event)" placeholder="Youtube URL">
-        <button (click)="updateSong($event)">Update</button>
+        <button (click)="updateSong($event)"
+                [disabled]="!songData.original_url && !songData.title"
+                class="update-button"
+        >Update</button>
     }
 
 <!--    TODO - add checkbox field in songData, only checked songs will be downloaded-->

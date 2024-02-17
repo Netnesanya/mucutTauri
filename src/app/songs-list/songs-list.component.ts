@@ -61,7 +61,10 @@ export class SongsListComponent implements OnInit {
         }
     }
 
-    protected readonly DISABLED = DISABLED;
+    public removeAll() {
+        this.songDataService.songsData = []
+    }
+
     protected readonly READY = READY;
     protected readonly LOADING = LOADING;
 }

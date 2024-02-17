@@ -1,13 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SongDataFetched} from "../../services/song-data.service";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {HttpService} from "../../http.service";
+import {DISABLED, LOADING, READY} from "../../header/header.component";
 
 @Component({
     selector: 'app-song',
     standalone: true,
     imports: [
-        NgIf
+        NgIf,
+        NgClass
     ],
     templateUrl: './song.component.html',
     styleUrl: './song.component.css'
@@ -18,6 +20,7 @@ export class SongComponent implements OnInit {
     @Input() songData!: SongDataFetched
 
     public temporaryUrl = ''
+    public updateButtonStatus = DISABLED
 
     constructor(private http: HttpService) {
     }
@@ -48,4 +51,7 @@ export class SongComponent implements OnInit {
         event.preventDefault()
         this.removeSong.emit(this.songData)
     }
+
+    protected readonly READY = READY;
+    protected readonly LOADING = LOADING;
 }

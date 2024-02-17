@@ -12,13 +12,39 @@
             background-color: #4CAF50;
         }
 
-        &.disabled {
+        &.loading {
+            background-color: yellow;
+            color: black;
+        }
+
+        &:disabled {
             color: black;
             background-color: gray;
         }
 
+        &.error {
+            background-color: red;
+            color: black;
+        }
+    }
+
+    .download-all-button {
+        &.ready {
+            background-color: #4CAF50;
+        }
+
         &.loading {
             background-color: yellow;
+            color: black;
+        }
+
+        &:disabled {
+            color: black;
+            background-color: gray;
+        }
+
+        &.error {
+            background-color: red;
             color: black;
         }
     }

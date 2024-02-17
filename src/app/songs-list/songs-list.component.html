@@ -1,8 +1,8 @@
 <button (click)="createEmptySongField($event)">Add</button>
 <button (click)="handleUpdateButton($event)"
         class="update-button"
-        [ngClass]="(updateButtonStatus === DISABLED || songDataService.songsData.length === 0) ? DISABLED
-                : (updateButtonStatus === READY ? READY : LOADING)"
+        [ngClass]="updateButtonStatus === READY ? READY : LOADING"
+        [disabled]=" songDataService.songsData.length === 0"
 >Update</button>
 <ul class="song-list-container">
     @for (song of songDataService.songsData; let index = $index; track index;) {
@@ -14,6 +14,5 @@
             ></app-song>
         </li>
     }
-
 </ul>
-
+<button (click)="removeAll()">Remove all</button>

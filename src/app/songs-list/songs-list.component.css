@@ -16,13 +16,18 @@
         background-color: #4CAF50;
     }
 
-    &.disabled {
+    &.loading {
+        background-color: yellow;
+        color: black;
+    }
+
+    &:disabled {
         color: black;
         background-color: gray;
     }
 
-    &.loading {
-        background-color: yellow;
+    &.error {
+        background-color: red;
         color: black;
     }
 }

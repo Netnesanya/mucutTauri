@@ -6,6 +6,7 @@ import {NgClass} from "@angular/common";
 export const READY = 'ready'
 export const LOADING = 'loading'
 export const DISABLED = 'disabled'
+export const ERROR = 'error'
 
 @Component({
     selector: 'app-header',
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
     public selectedFile: File | null = null;
 
     public submitButtonStatus: string = DISABLED
+    public downloadAllButtonStatus: string = DISABLED
 
     constructor(
         private http: HttpService,
@@ -42,11 +44,15 @@ export class HeaderComponent implements OnInit {
 
     public handleDownloadAll(): void {
         if (this.submitButtonStatus === READY) {
+            this.downloadAllButtonStatus = LOADING
+
             this.http.downloadMp3Bulk(this.songDataService.songsData.filter(song => song.userInput?.checked))
                 .subscribe(data => {
                     console.log(data);
+                    this.downloadAllButtonStatus = READY
                 }),
                 (error: Error) => {
+                    this.downloadAllButtonStatus = READY
                     console.error('Error downloading mp3 in bulk:', error)
                 }
         }
@@ -63,9 +69,11 @@ export class HeaderComponent implements OnInit {
                 .subscribe((data: any) => {
                         this.songDataService.songsData = data
                         console.log(this.songDataService.songsData)
+                        this.submitButtonStatus = READY
                     }
                 ),
                 (error: Error) => {
+                    this.submitButtonStatus = ERROR
                     console.error('Error fetching video info:', error)
                 }
 
@@ -75,7 +83,6 @@ export class HeaderComponent implements OnInit {
         }
     }
 
-    protected readonly DISABLED = DISABLED;
     protected readonly READY = READY;
     protected readonly LOADING = LOADING;
 }

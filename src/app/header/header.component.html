@@ -3,12 +3,16 @@
         <label for="txt-input"> txt with song titles => </label>
         <input (change)="handleFileInput($event)" type="file" accept=".txt" id="txt-input">
         <button (click)="submitFile()" class="submit-button"
-                [ngClass]="submitButtonStatus === DISABLED ? DISABLED
-                : (submitButtonStatus === READY ? READY : LOADING)"
+                [ngClass]="submitButtonStatus"
+                [disabled]="!selectedFile"
         >{{submitButtonStatus === LOADING ? 'Loading' : 'Submit'}}</button>
     </div>
 
     <div class="toolset-right">
-        <button (click)="handleDownloadAll()">Download all</button>
+        <button (click)="handleDownloadAll()"
+                [ngClass]="downloadAllButtonStatus"
+                [disabled]="!selectedFile"
+                class="download-all-button"
+        >Download all</button>
     </div>
 </div>
