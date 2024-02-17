@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SongDataFetched} from "../../services/song-data.service";
 import {NgIf} from "@angular/common";
+import {HttpService} from "../../http.service";
 
 @Component({
     selector: 'app-song',
@@ -14,12 +15,11 @@ import {NgIf} from "@angular/common";
 export class SongComponent implements OnInit {
     @Output() removeSong = new EventEmitter<SongDataFetched>();
 
-
     @Input() songData!: SongDataFetched
 
     public temporaryUrl = ''
 
-    constructor() {
+    constructor(private http: HttpService) {
     }
 
     ngOnInit() {
@@ -33,8 +33,13 @@ export class SongComponent implements OnInit {
         this.temporaryUrl = event.target.value
     }
 
-    public addUlr(): void {
-        this.songData['original_url'] = this.temporaryUrl
+    public updateSong(): void {
+        this.http.updateMp3Metadata(this.songData)
+            .subscribe(data => {
+            this.songData = data as SongDataFetched
+        }), (error: Error) => {
+            console.error('Error updating mp3 metadata:', error)
+        }
     }
 
     public remove(event: any): void {

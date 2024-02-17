@@ -49,7 +49,8 @@ export class SongsListComponent implements OnInit {
             event.preventDefault()
             this.updateButtonStatus = LOADING
 
-            this.http.updateMp3Metadata(this.songDataService.songsData)
+            this.http.updateMp3MetadataBulk(this.songDataService.songsData
+                .filter(song => song.userInput?.checked))
                 .subscribe(data => {
                     this.songDataService.songsData = data as SongDataFetched[]
                     this.updateButtonStatus = READY
