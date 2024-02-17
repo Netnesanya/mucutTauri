@@ -13,7 +13,6 @@ export type SongDataFetched = {
 })
 export class SongDataService {
 
-  public songsData!: SongDataFetched[]
-
+  public songsData: SongDataFetched[] = [];
   constructor() { }
 }

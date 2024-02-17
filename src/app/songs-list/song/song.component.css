@@ -2,5 +2,20 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 15px;
+    gap: 5px;
+
+    .remove-song {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        cursor: pointer;
+        color: red;
+    }
+
+    .timestamp-input {
+        input {
+            font-size: 10px;
+            width: 20px;
+        }
+    }
 }

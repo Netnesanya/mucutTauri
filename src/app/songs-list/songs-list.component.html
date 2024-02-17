@@ -1,8 +1,14 @@
+<button (click)="createEmptySongField($event)">Add</button>
 <ul class="song-list-container">
-    <li *ngFor="let song of songDataService.songsData; let i = index">
-        {{i + 1}}
-        <app-song [songData]="song"></app-song>
-    </li>
+    @for (song of songDataService.songsData; let index = $index; track index;) {
+        <li>
+            {{index + 1}}
+            <app-song
+                    [songData]="song"
+                    (removeSong)="removeSong($event)"
+            ></app-song>
+        </li>
+    }
 
 </ul>
 
