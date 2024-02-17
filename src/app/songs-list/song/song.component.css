@@ -12,6 +12,10 @@
         color: red;
     }
 
+    .url-input {
+        width: 95px;
+    }
+
     .timestamp-input {
         input {
             font-size: 10px;
