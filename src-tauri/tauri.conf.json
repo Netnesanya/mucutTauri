@@ -13,6 +13,9 @@
   "tauri": {
     "allowlist": {
       "all": true,
+      "http": {
+        "all": true
+      },
       "shell": {
         "all": false,
         "open": true
@@ -35,11 +38,14 @@
     },
     "windows": [
       {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "tauri-app",
-        "width": 1200,
-        "height": 900
+        "title": "Mucut",
+        "width": 800,
+        "height": 600,
+        "minWidth": 600,
+        "minHeight": 400,
+        "maxWidth": 1200,
+        "maxHeight": 800,
+        "resizable": true
       }
     ]
   }
