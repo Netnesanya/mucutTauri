@@ -44,21 +44,35 @@ export class HeaderComponent implements OnInit {
 
     public handleDownloadAll(): void {
         if (this.submitButtonStatus === READY || this.songDataService.songsData.length > 0) {
-            this.downloadAllButtonStatus = LOADING
-            console.log(this.songDataService.songsData);
+            this.downloadAllButtonStatus = LOADING;
 
-            this.http.downloadMp3Bulk(this.songDataService.songsData)
-                .subscribe(data => {
+            const updatedData = this.songDataService.songsData.map(el => {
+                // Create a copy of el.userInput, updating the duration or setting it if it's not already set
+                const updatedUserInput = {
+                    ...el.userInput,
+                    duration: this.songDataService.defaultDuration
+                };
+                // Return a new object with the updated userInput
+                return {
+                    ...el,
+                    userInput: updatedUserInput
+                };
+            });
 
-                    console.log(this.songDataService.songsData);
-                    this.downloadAllButtonStatus = READY
-                }),
-                (error: Error) => {
-                    this.downloadAllButtonStatus = READY
-                    console.error('Error downloading mp3 in bulk:', error)
-                }
+            this.http.downloadMp3Bulk(updatedData)
+                .subscribe({
+                    next: (data) => {
+                        console.log(this.songDataService.songsData);
+                        this.downloadAllButtonStatus = READY;
+                    },
+                    error: (error: Error) => {
+                        this.downloadAllButtonStatus = READY;
+                        console.error('Error downloading mp3 in bulk:', error);
+                    }
+                });
         }
     }
+
 
     public submitFile() {
         const file = this.selectedFile;
@@ -83,6 +97,14 @@ export class HeaderComponent implements OnInit {
         } else {
             console.log('No file selected');
         }
+    }
+
+    public updateLengthInput(event: any): void {
+        this.songDataService.defaultDuration = Number(event.target.value) ?? 0
+        // this.songDataService.songsData.forEach(el => {
+        //     el.userInput = el.userInput || {};
+        //     el.userInput.duration = Number(event.target.value) || event.target.value;
+        // })
     }
 
     protected readonly READY = READY;

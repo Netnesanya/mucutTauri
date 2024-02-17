@@ -25,5 +25,8 @@ export type CombinedSongData = {
 export class SongDataService {
 
   public songsData: CombinedSongData[] = [];
+
+  public defaultDuration!: number
+
   constructor() { }
 }
