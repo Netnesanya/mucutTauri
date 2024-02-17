@@ -40,7 +40,10 @@ export class SongsListComponent implements OnInit {
             original_url: '',
             duration: 0,
             duration_string: '',
-            heatmap: []
+            heatmap: [],
+            userInput: {
+                checked: true
+            }
         });
     }
 
