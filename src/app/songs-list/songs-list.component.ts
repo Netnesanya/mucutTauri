@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {SongComponent} from "./song/song.component";
-
-export interface Song {
-  [key: string]: any
-}
+import { SongDataService} from "../services/song-data.service";
 
 @Component({
   selector: 'app-songs-list',
@@ -17,14 +14,14 @@ export interface Song {
   styleUrl: './songs-list.component.css'
 })
 export class SongsListComponent implements OnInit{
+  //
+  // public songsList: SongDataFetched[] = [
+  //
+  // ]
 
-  public songsList: Song[] = [
-    {title: 'asda', length: '12:12', mostPlayed: {}},
-    {title: 'asdasda', length: '22:42', mostPlayed: {}},
-    {title: 'DDDDDasda', length: '3:22', mostPlayed: {}},
-  ]
-
-  constructor() {
+  constructor(
+      public songDataService: SongDataService
+  ) {
   }
 
   ngOnInit() {

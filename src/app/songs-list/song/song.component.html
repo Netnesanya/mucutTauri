@@ -1,5 +1,5 @@
 <form class="song-form">
-    <input type="text" [value]="songData['title']" (change)="updateTitle($event)">
-    <span>{{songData['length']}}</span>
+    <input type="text" [value]="songData.title" (change)="updateTitle($event)">
+    <span>{{songData.duration_string}}</span>
 
 </form>

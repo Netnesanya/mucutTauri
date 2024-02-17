@@ -1,1 +1,14 @@
-<p>header works!</p>
+<div class="header-container">
+    <div class="toolset-left">
+        <label for="txt-input"> txt with song titles => </label>
+        <input (change)="handleFileInput($event)" type="file" accept=".txt" id="txt-input">
+        <button (click)="submitFile()" class="submit-button"
+                [ngClass]="submitButtonStatus === DISABLED ? DISABLED
+                : (submitButtonStatus === READY ? READY : LOADING)"
+        >Submit</button>
+    </div>
+
+    <div class="toolset-right">
+        <button (click)="handleDownloadAll()">Download all</button>
+    </div>
+</div>

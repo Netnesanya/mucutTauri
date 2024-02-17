@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Song} from "../songs-list.component";
-import {Event} from "@tauri-apps/api/helpers/event";
+import {SongDataFetched} from "../../services/song-data.service";
 
 @Component({
   selector: 'app-song',
@@ -10,7 +9,7 @@ import {Event} from "@tauri-apps/api/helpers/event";
   styleUrl: './song.component.css'
 })
 export class SongComponent implements OnInit {
-  @Input() songData!: Song
+  @Input() songData!: SongDataFetched
 
   constructor() {
   }
