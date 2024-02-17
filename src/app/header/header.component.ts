@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
 
     public handleDownloadAll(): void {
         if (this.submitButtonStatus === READY) {
-            this.http.downloadMp3Bulk(this.songDataService.songsData)
+            this.http.downloadMp3Bulk(this.songDataService.songsData.filter(song => song.userInput?.checked))
                 .subscribe(data => {
                     console.log(data);
                 }),
