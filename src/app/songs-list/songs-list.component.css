@@ -2,11 +2,44 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    height: 900px;
 
     li {
         display: flex;
         align-items: center;
-        gap: 10px;
+        height: 30px;
+
+        .index {
+            width: 10px;
+        }
     }
+}
+
+.update-button {
+    &.ready {
+        background-color: #4CAF50;
+    }
+
+    &.loading {
+        background-color: yellow;
+        color: black;
+    }
+
+    &:disabled {
+        color: black;
+        background-color: gray;
+    }
+
+    &.error {
+        background-color: red;
+        color: black;
+    }
+}
+
+.control-block {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
 }

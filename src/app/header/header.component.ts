@@ -6,6 +6,7 @@ import {NgClass} from "@angular/common";
 export const READY = 'ready'
 export const LOADING = 'loading'
 export const DISABLED = 'disabled'
+export const ERROR = 'error'
 
 @Component({
     selector: 'app-header',
@@ -21,10 +22,11 @@ export class HeaderComponent implements OnInit {
     public selectedFile: File | null = null;
 
     public submitButtonStatus: string = DISABLED
+    public downloadAllButtonStatus: string = DISABLED
 
     constructor(
         private http: HttpService,
-        private songDataService: SongDataService
+        public songDataService: SongDataService
     ) {
     }
 
@@ -41,16 +43,35 @@ export class HeaderComponent implements OnInit {
     }
 
     public handleDownloadAll(): void {
-        if (this.submitButtonStatus === READY) {
-            this.http.downloadMp3Bulk(this.songDataService.songsData)
-                .subscribe(data => {
-                    console.log(data);
-                }),
-                (error: Error) => {
-                    console.error('Error downloading mp3 in bulk:', error)
-                }
+        if (this.submitButtonStatus === READY || this.songDataService.songsData.length > 0) {
+            this.downloadAllButtonStatus = LOADING;
+            const updatedData = this.songDataService.songsData.map(el => {
+                // Create a copy of el.userInput, updating the duration or setting it if it's not already set
+                const updatedUserInput = {
+                    ...el.userInput,
+                    duration: this.songDataService.defaultDuration
+                };
+                // Return a new object with the updated userInput
+                return {
+                    ...el,
+                    userInput: updatedUserInput
+                };
+            });
+
+            this.http.downloadMp3Bulk(updatedData)
+                .subscribe({
+                    next: (data) => {
+                        console.log(this.songDataService.songsData);
+                        this.downloadAllButtonStatus = READY;
+                    },
+                    error: (error: Error) => {
+                        this.downloadAllButtonStatus = READY;
+                        console.error('Error downloading mp3 in bulk:', error);
+                    }
+                });
         }
     }
+
 
     public submitFile() {
         const file = this.selectedFile;
@@ -63,9 +84,11 @@ export class HeaderComponent implements OnInit {
                 .subscribe((data: any) => {
                         this.songDataService.songsData = data
                         console.log(this.songDataService.songsData)
+                        this.submitButtonStatus = READY
                     }
                 ),
                 (error: Error) => {
+                    this.submitButtonStatus = ERROR
                     console.error('Error fetching video info:', error)
                 }
 
@@ -75,7 +98,14 @@ export class HeaderComponent implements OnInit {
         }
     }
 
-    protected readonly DISABLED = DISABLED;
+    public updateLengthInput(event: any): void {
+        this.songDataService.defaultDuration = Number(event.target.value) ?? 0
+        // this.songDataService.songsData.forEach(el => {
+        //     el.userInput = el.userInput || {};
+        //     el.userInput.duration = Number(event.target.value) || event.target.value;
+        // })
+    }
+
     protected readonly READY = READY;
     protected readonly LOADING = LOADING;
 }

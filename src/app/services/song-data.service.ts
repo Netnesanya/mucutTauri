@@ -8,12 +8,25 @@ export type SongDataFetched = {
   title: string
 }
 
+export type SongDataUserInput =   {
+  from?: number | string;
+  to?: number | string;
+  duration?: number
+}
+
+export type CombinedSongData = {
+    fetched: SongDataFetched
+    userInput: SongDataUserInput
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class SongDataService {
 
-  public songsData!: SongDataFetched[]
+  public songsData: CombinedSongData[] = [];
+
+  public defaultDuration!: number
 
   constructor() { }
 }
