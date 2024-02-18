@@ -48,6 +48,8 @@ export class HeaderComponent implements OnInit {
     public handleDownloadAll(): void {
         if (this.submitButtonStatus === READY || this.songDataService.songsData.length > 0) {
             this.downloadAllButtonStatus = LOADING;
+            this.songDataService.downloadedMessages = [];
+
             const updatedData = this.songDataService.songsData.map(el => {
                 // Create a copy of el.userInput, updating the duration or setting it if it's not already set
                 const updatedUserInput = {
