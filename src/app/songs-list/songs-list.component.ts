@@ -4,6 +4,7 @@ import {SongComponent} from "./song/song.component";
 import {CombinedSongData, SongDataFetched, SongDataService} from "../services/song-data.service";
 import {DISABLED, LOADING, READY} from "../header/header.component";
 import {HttpService} from "../http.service";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-songs-list',
@@ -11,13 +12,16 @@ import {HttpService} from "../http.service";
     imports: [
         NgForOf,
         SongComponent,
-        NgClass
+        NgClass,
+        FormsModule
     ],
     templateUrl: './songs-list.component.html',
     styleUrl: './songs-list.component.css'
 })
 export class SongsListComponent implements OnInit {
     public updateButtonStatus: string = DISABLED;
+    public siqName: string = '';
+    // public authorName: string = '';
 
     constructor(public songDataService: SongDataService, public http: HttpService) {}
 
@@ -72,7 +76,7 @@ export class SongsListComponent implements OnInit {
 
     public handleCreateSiq(event: any): void {
         event.preventDefault();
-        this.http.requestSiqCreation()
+        this.http.requestSiqCreation(this.siqName)
             .subscribe({
                 next: (data) => {
                     console.log(data);

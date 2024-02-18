@@ -43,3 +43,17 @@
     justify-content: space-between;
     padding: 10px 20px;
 }
+
+.siq-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+
+    input {
+        width: 30%;
+    }
+
+    .author {
+        margin-right: 5px;
+    }
+}

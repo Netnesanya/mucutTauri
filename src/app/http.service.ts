@@ -32,8 +32,8 @@ export class HttpService {
         return this.http.post(this.apiUrl + 'update-mp3-metadata', metadata)
     }
 
-    public requestSiqCreation() {
-        return this.http.get(this.apiUrl + 'pack-siq')
+    public requestSiqCreation(siqName: string) {
+        return this.http.get(this.apiUrl + `pack-siq?name=${siqName}`)
     }
 
 

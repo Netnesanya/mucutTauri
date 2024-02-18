@@ -1,6 +1,10 @@
 <div class="control-block">
     <button (click)="createEmptySongField($event)">Add</button>
-    <button (click)="handleCreateSiq($event)">.siq</button>
+    <div class="siq-container">
+<!--        <input type="text" class="siq-input author" [(ngModel)]="authorName" placeholder="author name">-->
+        <input type="text" class="siq-input pack" [(ngModel)]="siqName" placeholder="pack name">
+        <button (click)="handleCreateSiq($event)">.siq</button>
+    </div>
     <button (click)="handleUpdateButton($event)"
             class="update-button"
             [ngClass]="updateButtonStatus"
