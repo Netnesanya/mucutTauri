@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpService} from "../http.service";
-import {SongDataService} from "../services/song-data.service";
+import {CombinedSongData, SongDataFetched, SongDataService} from "../services/song-data.service";
 import {NgClass} from "@angular/common";
+import {WebSocketService} from "../websocket.service";
 
 export const READY = 'ready'
 export const LOADING = 'loading'
@@ -26,8 +27,10 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         private http: HttpService,
-        public songDataService: SongDataService
+        public songDataService: SongDataService,
+        private ws: WebSocketService
     ) {
+        this.ws.connect('ws://localhost:8080/ws/video-info'); // Ensure the URL matches your server setup
     }
 
     ngOnInit() {
@@ -61,7 +64,6 @@ export class HeaderComponent implements OnInit {
             this.http.downloadMp3Bulk(updatedData)
                 .subscribe({
                     next: (data) => {
-                        console.log(this.songDataService.songsData);
                         this.downloadAllButtonStatus = READY;
                     },
                     error: (error: Error) => {
@@ -73,30 +75,60 @@ export class HeaderComponent implements OnInit {
     }
 
 
+    // Relevant parts of HeaderComponent
     public submitFile() {
         const file = this.selectedFile;
         if (file) {
-            const formData = new FormData()
-            formData.append('file', file)
+            const reader = new FileReader();
 
-            this.submitButtonStatus = LOADING
-            this.http.fetchVideoInfo(formData)
-                .subscribe((data: any) => {
-                        this.songDataService.songsData = data
-                        console.log(this.songDataService.songsData)
-                        this.submitButtonStatus = READY
-                    }
-                ),
-                (error: Error) => {
-                    this.submitButtonStatus = ERROR
-                    console.error('Error fetching video info:', error)
+            reader.onload = () => {
+                const content = reader.result;
+                if (typeof content === 'string') {
+                    console.log("Sending message:", content);
+                    this.ws.sendMessage(content);
+                    this.submitButtonStatus = LOADING;
+
+                    // Listen for messages from the server
+                    this.ws.getMessages().subscribe({
+                        next: (message) => {
+                            if (message.includes('Successfully downloaded audio segment')) {
+                                this.songDataService.downloadedMessages.push(message.replace('Successfully downloaded audio segment', "downloaded"));
+                                return
+                            }
+
+                            const fetchedDataArray: SongDataFetched[] = JSON.parse(message);
+
+                            const newSongsData: CombinedSongData[] = fetchedDataArray
+                                .filter(fetched =>
+                                    // Check if fetched song does not exist in the current songsData array
+                                    !this.songDataService.songsData.some(
+                                        existingSong => existingSong.fetched.original_url === fetched.original_url
+                                    )
+                                )
+                                .map(fetched => ({
+                                    fetched: fetched,
+                                    userInput: {} // Initialize with an empty object or copy existing userInput if needed
+                                }));
+
+                            // Add the newSongsData to the existing songsData array
+                            this.songDataService.songsData = [...this.songDataService.songsData, ...newSongsData];
+                            console.log(this.songDataService.songsData);
+                            this.submitButtonStatus = READY;
+                        },
+                        error: (error) => {
+                            console.error('WebSocket error:', error);
+                            this.submitButtonStatus = ERROR;
+                        }
+                    });
                 }
+            };
 
-            console.log('Submitting file:', file.name);
-        } else {
-            console.log('No file selected');
+            reader.readAsText(file);
         }
     }
+
+
+
 
     public updateLengthInput(event: any): void {
         this.songDataService.defaultDuration = Number(event.target.value) ?? 0
