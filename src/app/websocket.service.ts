@@ -12,6 +12,10 @@ export class WebSocketService {
   public connect(url: string): void {
     this.socket = new WebSocket(url);
 
+    this.socket.onopen = (event) => {
+        console.log('WebSocket Open');
+    }
+
     this.socket.onmessage = (event) => {
       this.messageSubject.next(event.data);
     };
