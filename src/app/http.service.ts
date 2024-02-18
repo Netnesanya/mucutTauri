@@ -21,7 +21,6 @@ export class HttpService {
     }
 
     public downloadMp3Bulk(metadata: CombinedSongData[]) {
-        console.log(metadata);
         return this.http.post(this.downloadMp3BulkUrl, metadata, {responseType: 'blob'})
     }
 
