@@ -64,7 +64,6 @@ export class HeaderComponent implements OnInit {
             this.http.downloadMp3Bulk(updatedData)
                 .subscribe({
                     next: (data) => {
-                        console.log(this.songDataService.songsData);
                         this.downloadAllButtonStatus = READY;
                     },
                     error: (error: Error) => {
@@ -92,8 +91,12 @@ export class HeaderComponent implements OnInit {
                     // Listen for messages from the server
                     this.ws.getMessages().subscribe({
                         next: (message) => {
+                            if (message.includes('Successfully downloaded audio segment')) {
+                                this.songDataService.downloadedMessages.push(message.replace('Successfully downloaded audio segment', "downloaded"));
+                                return
+                            }
+
                             const fetchedDataArray: SongDataFetched[] = JSON.parse(message);
-                            console.log(fetchedDataArray);
 
                             const newSongsData: CombinedSongData[] = fetchedDataArray
                                 .filter(fetched =>

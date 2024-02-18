@@ -1,6 +1,6 @@
 .song-list-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 5px;
 
     li {
@@ -12,6 +12,22 @@
             width: 10px;
         }
     }
+}
+
+.downloads-list {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 5px;
+    color: greenyellow;
+    min-width: 60px;
+    min-height: 15px;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.list-section {
+    display: grid;
+    grid-template-columns: 3fr 1.5fr;
 }
 
 .update-button {

@@ -28,5 +28,7 @@ export class SongDataService {
 
   public defaultDuration!: number
 
+  public downloadedMessages: string[] = []
+
   constructor() { }
 }
