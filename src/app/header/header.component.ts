@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
         public songDataService: SongDataService,
         private ws: WebSocketService
     ) {
-        this.ws.connect(`wss://${this.http.apiUrl.replace('https://', '')}/ws/video-info`); // Ensure the URL matches your server setup
+        this.ws.connect(`wss://${this.http.apiUrl.replace('https://', '')}ws/video-info`); // Ensure the URL matches your server setup
     }
 
     ngOnInit() {
@@ -94,6 +94,9 @@ export class HeaderComponent implements OnInit {
                     // Listen for messages from the server
                     this.ws.getMessages().subscribe({
                         next: (message) => {
+                            if (message === null || message === undefined || message === '') {
+                                return
+                            }
                             if (message.includes('Successfully downloaded audio segment')) {
                                 this.songDataService.downloadedMessages.push(message.replace('Successfully downloaded audio segment', "downloaded"));
                                 return

@@ -11,8 +11,8 @@ export class HttpService {
 
     public apiUrl: string = env.apiUrlHostedFargus;
 
-    private readonly fetchVideoInfoUrl = this.apiUrl + 'fetch-video-info';
-    private readonly downloadMp3BulkUrl = this.apiUrl + 'download-mp3-bulk';
+    // private readonly fetchVideoInfoUrl = this.apiUrl + 'fetch-video-info';
+    // private readonly downloadMp3BulkUrl = this.apiUrl + 'download-mp3-bulk';
 
     constructor(private http: HttpClient,
                 private ws: WebSocketService) {
@@ -26,11 +26,11 @@ export class HttpService {
     }
 
     public fetchVideoInfo(txt: FormData) {
-        return this.http.post(this.fetchVideoInfoUrl, txt);
+        return this.http.post(this.apiUrl + 'fetch-video-info', txt);
     }
 
     public downloadMp3Bulk(metadata: CombinedSongData[]) {
-        return this.http.post(this.downloadMp3BulkUrl, metadata, {responseType: 'blob'})
+        return this.http.post(this.apiUrl + 'download-mp3-bulk', metadata, {responseType: 'blob'})
     }
 
     public updateMp3MetadataBulk(metadata: SongDataFetched[]) {
