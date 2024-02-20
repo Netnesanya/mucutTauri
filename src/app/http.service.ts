@@ -2,18 +2,26 @@ import {Injectable} from '@angular/core';
 import {env} from "../env/env";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CombinedSongData, SongDataFetched} from "./services/song-data.service";
+import {WebSocketService} from "./websocket.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class HttpService {
 
-    private readonly apiUrl: string = env.apiUrl;
+    public apiUrl: string = env.apiUrlHostedFargus;
 
     private readonly fetchVideoInfoUrl = this.apiUrl + 'fetch-video-info';
     private readonly downloadMp3BulkUrl = this.apiUrl + 'download-mp3-bulk';
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                private ws: WebSocketService) {
+    }
+
+    public switchHost(host: string) {
+        this.apiUrl = host;
+        this.ws.host = host
+        this.ws.disconnect();
     }
 
     public fetchVideoInfo(txt: FormData) {

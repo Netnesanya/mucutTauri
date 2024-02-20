@@ -6,8 +6,14 @@
                 [ngClass]="submitButtonStatus"
                 [disabled]="!selectedFile"
         >{{submitButtonStatus === LOADING ? 'Loading' : 'Submit'}}</button>
+
+
     </div>
 
+    <div class="host-control">
+        <button [ngClass]="http.apiUrl === env.apiUrlHostedFargus ? 'active' : ''" (click)="handleSwitchHost(env.apiUrlHostedFargus)">Fargus </button>
+        <button [ngClass]="http.apiUrl === env.apiUrlLocalHost ? 'active' : ''" (click)="handleSwitchHost(env.apiUrlLocalHost)">Localhost</button>
+    </div>
 
     <div class="toolset-right">
         <input (change)="updateLengthInput($event)" class="default-duration-input" type="number" placeholder="35 sec">
