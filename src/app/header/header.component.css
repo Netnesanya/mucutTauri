@@ -16,6 +16,17 @@
         }
     }
 
+    .host-control {
+        cursor: pointer;
+
+        button {
+            &.active {
+                color: #4CAF50;
+            }
+        }
+
+    }
+
     .submit-button {
 
         &.ready {

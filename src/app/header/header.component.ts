@@ -3,6 +3,7 @@ import {HttpService} from "../http.service";
 import {CombinedSongData, SongDataFetched, SongDataService} from "../services/song-data.service";
 import {NgClass} from "@angular/common";
 import {WebSocketService} from "../websocket.service";
+import {env} from "../../env/env";
 
 export const READY = 'ready'
 export const LOADING = 'loading'
@@ -26,11 +27,11 @@ export class HeaderComponent implements OnInit {
     public downloadAllButtonStatus: string = DISABLED
 
     constructor(
-        private http: HttpService,
+        public http: HttpService,
         public songDataService: SongDataService,
         private ws: WebSocketService
     ) {
-        this.ws.connect('ws://localhost:8080/ws/video-info'); // Ensure the URL matches your server setup
+        this.ws.connect(`ws://${this.http.apiUrl}/ws/video-info`); // Ensure the URL matches your server setup
     }
 
     ngOnInit() {
@@ -140,6 +141,11 @@ export class HeaderComponent implements OnInit {
         // })
     }
 
+    public handleSwitchHost(value: string): void {
+        this.http.switchHost(value);
+    }
+
     protected readonly READY = READY;
     protected readonly LOADING = LOADING;
+    protected readonly env = env;
 }

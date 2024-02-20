@@ -1,5 +1,7 @@
 export const env = {
     production: false,
-    apiUrl: 'http://212.111.84.126/'
+
+    apiUrlLocalHost: 'localhost:8080/',
+    apiUrlHostedFargus: '212.111.84.126/'
 
 }
