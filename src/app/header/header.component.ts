@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
         public songDataService: SongDataService,
         private ws: WebSocketService
     ) {
-        this.ws.connect(`ws://${this.http.apiUrl}/ws/video-info`); // Ensure the URL matches your server setup
+        this.ws.connect(`wss://${this.http.apiUrl.replace('https://', '')}/ws/video-info`); // Ensure the URL matches your server setup
     }
 
     ngOnInit() {

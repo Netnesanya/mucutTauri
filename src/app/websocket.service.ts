@@ -1,6 +1,7 @@
 // src/app/websocket.service.ts
 import { Injectable } from '@angular/core';
 import {Observable, Subject, timer} from 'rxjs';
+import {env} from "../env/env";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import {Observable, Subject, timer} from 'rxjs';
 export class WebSocketService {
   public socket!: WebSocket;
   private messageSubject: Subject<string> = new Subject();
-  public host!: string
+  public host: string = env.apiUrlHostedFargus
+  public wasHostChanged = false
 
   public connect(url: string): void {
     this.socket = new WebSocket(url);
@@ -47,7 +49,10 @@ export class WebSocketService {
     timer(2000)
         .subscribe(() => {
           console.log('Retrying WebSocket connection...');
-          this.connect(this.host ? `ws://${this.host}ws/video-info` : url);
+          const socketURL = this.host === env.apiUrlHostedFargus ? `wss://${this.host.replace('https://', '')}ws/video-info` :
+              `ws://${this.host.replace('http://', '')}ws/video-info`;
+
+          this.connect(this.wasHostChanged ? socketURL : url);
         });
   }
 

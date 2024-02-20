@@ -21,6 +21,7 @@ export class HttpService {
     public switchHost(host: string) {
         this.apiUrl = host;
         this.ws.host = host
+        this.ws.wasHostChanged = true
         this.ws.disconnect();
     }
 
